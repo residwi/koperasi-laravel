@@ -45,3 +45,4 @@ Route::group(['middleware' => ['auth', 'daftar_anggota']], function () {
 
 // mengubah status pinjaman anggota
 Route::post('pinjaman/status/{pinjaman}', 'PinjamanController@status')->middleware('auth')->name('pinjaman.status');
+Route::get('api/laporan', 'HomeController@apiLaporan');

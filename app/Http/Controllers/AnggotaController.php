@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 
 class AnggotaController extends Controller
 {
+    // menampilkan page daftar anggota
     public function index()
     {
+        // query mendapatkan list anggota
         $anggota = Anggota::with('user')->get();
 
         return view('adminlte.anggota.index', compact('anggota'));

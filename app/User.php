@@ -38,6 +38,7 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
     ];
 
+    // membuat relasi dengan table anggota
     public function anggota_detail()
     {
         return $this->hasOne('App\Anggota');

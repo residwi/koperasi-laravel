@@ -64,7 +64,7 @@ class PinjamanController extends Controller
         // upload dokumen ke folder public/dokumen
         $path = Storage::putFile(
             'public/dokumen',
-            $request->file('dokumen'),
+            $request->file('dokumen')
         );
 
         // mendapatkan data diri anggota yg sedang login

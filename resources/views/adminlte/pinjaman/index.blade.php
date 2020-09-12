@@ -53,10 +53,12 @@
                         @default
                         <p class="badge badge-warning">Waiting</p><br>
                         @if (auth()->user()->is_admin)
-                        <button class="btn btn-success btn-sm status-pinjaman" data-pinjaman="{{ $item->id }}" data-status="1"  data-toggle="tooltip" title="Approve">
+                        <button class="btn btn-success btn-sm status-pinjaman" data-pinjaman="{{ $item->id }}"
+                            data-status="1" data-toggle="tooltip" title="Approve">
                             <i class="fas fa-check"> </i>
                         </button>
-                        <button class="btn btn-danger btn-sm status-pinjaman" data-pinjaman="{{ $item->id }}" data-status="0" data-toggle="tooltip" title="Reject">
+                        <button class="btn btn-danger btn-sm status-pinjaman" data-pinjaman="{{ $item->id }}"
+                            data-status="0" data-toggle="tooltip" title="Reject">
                             <i class="fas fa-times"> </i>
                         </button>
                         @endif
@@ -131,7 +133,7 @@
             confirmButtonText: 'Ya',
             showLoaderOnConfirm: true,
             preConfirm: (login) => {
-                return fetch(`pinjaman/status/${pinjaman_id}`, {
+                return fetch(`api/pinjaman/status/${pinjaman_id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

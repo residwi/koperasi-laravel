@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// mengubah status pinjaman anggota
+Route::post('pinjaman/status/{pinjaman}', 'PinjamanController@status')->name('pinjaman.status');

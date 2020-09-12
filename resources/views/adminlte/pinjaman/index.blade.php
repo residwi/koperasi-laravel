@@ -134,7 +134,6 @@
                 return fetch(`pinjaman/status/${pinjaman_id}`, {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({status})

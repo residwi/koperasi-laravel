@@ -52,7 +52,7 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">History Angsuran Anggota</h3>
-        @if (auth()->user()->is_admin === FALSE)
+        @if (auth()->user()->is_admin)
         <a class="btn btn-info float-right" href="{{ route('pinjaman.angsuran.create', $pinjaman->id) }}">Bayar Angsuran</a>
         @endif
     </div>
@@ -111,7 +111,18 @@
         @if (auth()->user()->is_admin)
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
         ],
         @endif
         "order": [[ 0, "desc" ]],

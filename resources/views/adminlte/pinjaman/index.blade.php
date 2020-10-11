@@ -110,7 +110,18 @@
         @if (auth()->user()->is_admin)
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                }
+            },
         ],
         @endif
         "columnDefs": [
@@ -180,6 +191,13 @@
       Toast.fire({
         icon: 'success',
         title: '{{ session('status') }}'
+      })
+      @endif
+
+      @if (session('pengajuan_gagal'))
+      Swal.fire({
+        icon: 'warning',
+        title: '{{ session('pengajuan_gagal') }}'
       })
       @endif
     });

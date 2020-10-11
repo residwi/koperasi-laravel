@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Anggota;
 use App\Simpanan;
 use Illuminate\Http\Request;
 
@@ -44,7 +45,8 @@ class SimpananController extends Controller
     // menampilkan page tambah simpanan
     public function create()
     {
-        return view('adminlte.simpanan.create');
+        $anggota = Anggota::all();
+        return view('adminlte.simpanan.create', compact('anggota'));
     }
 
     // proses untuk menyimpan
@@ -68,6 +70,10 @@ class SimpananController extends Controller
         $user = auth()->user()->anggota_detail;
         $bunga = self::BUNGA_SIMPANAN * $input['simpanan_sukarela'];
 
+        if (auth()->user()->is_admin) {
+            $user = Anggota::find($request->anggota);
+        }
+
         // save data simpanan user
         $simpanan = new Simpanan([
             'simpanan_sukarela' => $input['simpanan_sukarela'],
@@ -82,7 +88,8 @@ class SimpananController extends Controller
     // menampilkan page edit simpanan
     public function edit(Simpanan $simpanan)
     {
-        return view('adminlte.simpanan.edit', compact('simpanan'));
+        $anggota = Anggota::all();
+        return view('adminlte.simpanan.edit', compact('simpanan', 'anggota'));
     }
 
     // proses untuk mengupdate dari edit

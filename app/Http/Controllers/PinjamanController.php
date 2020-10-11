@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Angsuran;
 use App\JenisPinjaman;
 use App\Pinjaman;
 use Illuminate\Http\Request;
@@ -30,8 +31,21 @@ class PinjamanController extends Controller
     // menampilkan page ajukan peminjaman
     public function create()
     {
-        // mendapatkan data diri anggota yg sedang login
         $anggota = auth()->user()->anggota_detail;
+        $pinjaman = $anggota->pinjaman->last();
+        // query untuk mendapatkan data paling terbaru 
+        $angsuran = Angsuran::where('pinjaman_id', $pinjaman->id)->latest('created_at')->first();
+        // (total_pinjaman * bunga) + total_pinjaman
+        $pinjaman->jumlah_pengajuan += $pinjaman->jumlah_pengajuan * self::BUNGA_PINJAMAN;
+        // untuk cek apakah sisa_pinjaman belum ada, jika kosong maka yang ditampilkan jumlah_pengajuannya
+        $sisa_pinjaman = $angsuran->sisa_pinjaman ?? $pinjaman->jumlah_pengajuan;
+
+        // jika masih ada angsuran yg belum lunas
+        if ($sisa_pinjaman != 0) {
+            return redirect()->route('pinjaman.index')->with('pengajuan_gagal', 'Maaf Anda Masih Punya Angsuran');
+        }
+
+        // mendapatkan data diri anggota yg sedang login
         $masa_kerja = date_diff($anggota->tgl_nik, now()); // dari selisih tanggal_nik sampai sekarang
         // mendaptkan master data jenis pinjaman
         $jenis_pinjaman = JenisPinjaman::all();

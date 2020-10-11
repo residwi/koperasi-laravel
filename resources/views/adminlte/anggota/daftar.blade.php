@@ -5,15 +5,48 @@
 @section('content')
 <div class="card card-info">
     <div class="card-header">
-        <h3 class="card-title">Silahkan lengkapi data diri dahulu.</h3>
+        <h3 class="card-title">
+            {{ auth()->user()->is_admin ? 'Isi Data Anggota' : 'Silahkan lengkapi data diri dahulu.' }}</h3>
     </div>
     <div class="card-body">
         <form action="{{ route('daftar-anggota') }}" method="POST">
             @csrf
+            @if(auth()->user()->is_admin)
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control @error('username') is-invalid @enderror"
+                        name="username" value="{{ old('username') }}" required>
+                    @error('username')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control @error('password') is-invalid @enderror"
+                        name="password" value="{{ old('password') }}" required>
+                    @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="password">Password Confirmation</label>
+                    <input type="password" id="password" name="password_confirmation" class="form-control" required>
+                </div>
+            </div>
+            <h5 class="mt-3">Data Diri</h5>
+            <hr>
+            @endif
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="nama">Nama</label>
-                    <input type="text" id="nama" class="form-control" value="{{ $nama }}" disabled>
+                    <input type="text" id="nama" class="form-control" name="nama"
+                        value="{{ auth()->user()->is_admin ? '' : auth()->user()->name }}"
+                        {{ auth()->user()->is_admin ? '' : 'disabled' }}>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="tgl_lahir">Tanggal Lahir</label>

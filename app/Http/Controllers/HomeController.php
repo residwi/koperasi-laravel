@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use App\Anggota;
 use App\Pinjaman;
 use App\Simpanan;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -23,11 +25,11 @@ class HomeController extends Controller
     public function formAnggota()
     {
         // jika user baru atau admin
-        if (auth()->user()->anggota_detail || auth()->user()->is_admin) {
+        if (auth()->user()->anggota_detail) {
             return redirect('home');
         }
 
-        return view('adminlte.anggota.daftar', ['nama' => auth()->user()->name]);
+        return view('adminlte.anggota.daftar');
     }
 
     // proses menyimpan data anggota baru
@@ -38,7 +40,7 @@ class HomeController extends Controller
         }
 
         // dapetin semua data yg di input dari form
-        $input = $request->all();
+        $input = $request->except(['nama', 'username', 'password', 'password_confirmation']);
 
         $validator = \Validator::make($input, [
             'tgl_lahir'         => 'required|date_format:d/m/Y',
@@ -65,6 +67,21 @@ class HomeController extends Controller
         $input['user_id'] = auth()->id();
         $input['tgl_lahir'] = Carbon::createFromFormat('d/m/Y', $input['tgl_lahir'])->format('Y-m-d');
         $input['tgl_nik'] = Carbon::createFromFormat('d/m/Y', $input['tgl_nik'])->format('Y-m-d');
+
+        if (auth()->user()->is_admin) {
+            $user = User::create([
+                'name' => $request->nama,
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+            ]);
+
+            $input['user_id'] = $user->id;
+
+            // simpan ke table anggota
+            Anggota::create($input);
+
+            return redirect()->route('anggota.index')->with('status', 'Anggota berhasil ditambahkan');
+        }
 
         // simpan ke table anggota
         Anggota::create($input);

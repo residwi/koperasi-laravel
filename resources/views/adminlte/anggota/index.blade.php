@@ -15,6 +15,7 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Anggota</h3>
+        <a href="{{ route('daftar-anggota') }}" class="btn btn-primary float-right">Tambah Anggota</a>
     </div>
     <div class="card-body">
         <table id="anggota-table" class="table table-bordered table-hover">
@@ -80,13 +81,39 @@
         @if (auth()->user()->is_admin)
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
         ],
         @endif
         "columnDefs": [
             { "width": "10%", "targets": -1 }
         ]
       });
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+    
+      @if (session('status'))
+      Toast.fire({
+        icon: 'success',
+        title: '{{ session('status') }}'
+      })
+      @endif
     });
 </script>
 @endpush

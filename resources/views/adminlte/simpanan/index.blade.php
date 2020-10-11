@@ -19,15 +19,15 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-12 col-sm-4">
+            {{-- <div class="col-12 col-sm-4">
                 <div class="info-box bg-light">
                     <div class="info-box-content">
                         <span class="info-box-text text-center text-muted">Bunga Simpanan</span>
                         <span class="info-box-number text-center text-muted mb-0">{{ $bunga }}%</span>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-sm-4">
+            </div> --}}
+            <div class="col-12 col-sm-6">
                 <div class="info-box bg-light">
                     <div class="info-box-content">
                         <span class="info-box-text text-center text-muted">Total Simpanan</span>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-sm-6">
                 <div class="info-box bg-light">
                     <div class="info-box-content">
                         <span class="info-box-text text-center text-muted">Total Simpanan Sukarela</span>
@@ -51,7 +51,7 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">History Simpanan Sukarela</h3>
-        @if (auth()->user()->is_admin === FALSE)
+        @if (auth()->user()->is_admin)
         <a class="btn btn-info float-right" href="{{ route('simpanan.create') }}">Tambah Simpanan</a>
         @endif
     </div>
@@ -65,7 +65,7 @@
                     <th> Simpanan Sukarela </th>
                     <th> Bunga </th>
                     <th> Total Simpanan Sukarela </th>
-                    @if (auth()->user()->is_admin === FALSE)
+                    @if (auth()->user()->is_admin)
                     <th class="text-center"> Actions </th>
                     @endif
                 </tr>
@@ -79,7 +79,7 @@
                     <td>{{ 'Rp. ' . number_format($item->simpanan_sukarela) }}</td>
                     <td>{{ 'Rp. ' . number_format($item->bunga) }}</td>
                     <td>{{ 'Rp. ' . number_format($item->total_simpanan_sukarela) }}</td>
-                    @if (auth()->user()->is_admin === FALSE)
+                    @if (auth()->user()->is_admin)
                     <td td class="text-center">
                         <a class="btn btn-success btn-sm" href="{{ route('simpanan.edit', $item->id) }}" data-toggle="tooltip" title="Edit">
                             <i class="fas fa-pencil-alt"> </i>
@@ -120,7 +120,18 @@
         @if (auth()->user()->is_admin)
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            },
         ],
         @endif
         "order": [[ 0, "desc" ]],

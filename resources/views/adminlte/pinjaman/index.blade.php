@@ -15,9 +15,7 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">History Pinjaman Anggota</h3>
-        @if (auth()->user()->is_admin === FALSE)
         <a class="btn btn-info float-right" href="{{ route('pinjaman.create') }}">Ajukan Peminjaman</a>
-        @endif
     </div>
     <div class="card-body">
         <table id="pinjaman-table" class="table table-bordered table-hover">

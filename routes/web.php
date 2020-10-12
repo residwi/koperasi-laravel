@@ -44,3 +44,4 @@ Route::group(['middleware' => ['auth', 'daftar_anggota']], function () {
 });
 
 Route::get('api/laporan', 'HomeController@apiLaporan');
+Route::get('api/anggota/{id}', 'AnggotaController@api');

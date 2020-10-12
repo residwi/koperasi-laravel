@@ -9,6 +9,7 @@ use App\Simpanan;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -24,8 +25,8 @@ class HomeController extends Controller
     // menampilkan form anggota ketika  baru daftar
     public function formAnggota()
     {
-        // jika user baru atau admin
-        if (auth()->user()->anggota_detail) {
+        // jika user baru dan bukan admin
+        if (auth()->user()->anggota_detail && !auth()->user()->is_admin) {
             return redirect('home');
         }
 
@@ -54,6 +55,7 @@ class HomeController extends Controller
             'tunjangan_jabatan' => 'required|numeric',
             'gaji'              => 'required|numeric',
             'simpanan_sukarela' => 'required|numeric',
+            'dokumen'           => 'required|mimes:jpg,jpeg,bmp,png,pdf'
         ]);
 
         // jika validasi gagal maka muncul errror
@@ -62,6 +64,12 @@ class HomeController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        // upload dokumen ke folder public/dokumen
+        $path = Storage::putFile(
+            'public/dokumen',
+            $request->file('dokumen')
+        );
 
         // user yg login
         $input['user_id'] = auth()->id();

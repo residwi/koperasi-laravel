@@ -16,6 +16,14 @@ class AnggotaController extends Controller
         return view('adminlte.anggota.index', compact('anggota'));
     }
 
+    public function api($id)
+    {
+        // query mendapatkan list anggota
+        $anggota = Anggota::find($id);
+
+        return response()->json($anggota);
+    }
+
     public function create()
     {
         //

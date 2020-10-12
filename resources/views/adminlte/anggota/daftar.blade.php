@@ -234,6 +234,19 @@
                             <input type="text" class="form-control" id="simpanan_wajib" value="50.000" disabled>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="dokumen">Upload File</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input @error('dokumen') is-invalid @enderror"
+                                id="dokumen" name="dokumen" required>
+                            <label class="custom-file-label" for="dokumen">Choose file</label>
+                        </div>
+                        @error('dokumen')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-success mt-3">Submit</button>
@@ -244,8 +257,11 @@
 
 @push('js')
 <script src="{{ asset('assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+
 <script>
     $(function () {
+        bsCustomFileInput.init();
         $('[data-mask]').inputmask()
     })
 </script>

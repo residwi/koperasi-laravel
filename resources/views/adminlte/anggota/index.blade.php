@@ -15,7 +15,9 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Anggota</h3>
+        @if (auth()->user()->is_admin)
         <a href="{{ route('daftar-anggota') }}" class="btn btn-primary float-right">Tambah Anggota</a>
+        @endif
     </div>
     <div class="card-body">
         <table id="anggota-table" class="table table-bordered table-hover">

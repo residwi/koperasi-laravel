@@ -71,6 +71,8 @@ class HomeController extends Controller
             $request->file('dokumen')
         );
 
+        $input = $request->except(['dokumen']);
+
         // user yg login
         $input['user_id'] = auth()->id();
         $input['tgl_lahir'] = Carbon::createFromFormat('d/m/Y', $input['tgl_lahir'])->format('Y-m-d');

@@ -9,7 +9,7 @@
             {{ auth()->user()->is_admin ? 'Isi Data Anggota' : 'Silahkan lengkapi data diri dahulu.' }}</h3>
     </div>
     <div class="card-body">
-        <form action="{{ route('daftar-anggota') }}" method="POST">
+        <form action="{{ route('daftar-anggota') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @if(auth()->user()->is_admin)
             <div class="row">

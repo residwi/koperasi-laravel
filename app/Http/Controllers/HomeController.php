@@ -85,10 +85,10 @@ class HomeController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            $input['user_id'] = $user->id;
+            $input = $request->except(['nama', 'username', 'password', 'password_confirmation', 'dokumen']);
 
             // simpan ke table anggota
-            Anggota::create($input);
+            Anggota::create(array_merge($input, ['user_id' => $user->id]));
 
             return redirect()->route('anggota.index')->with('status', 'Anggota berhasil ditambahkan');
         }

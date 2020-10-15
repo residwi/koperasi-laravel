@@ -87,6 +87,9 @@ class HomeController extends Controller
 
             $input = $request->except(['nama', 'username', 'password', 'password_confirmation', 'dokumen']);
 
+            $input['tgl_lahir'] = Carbon::createFromFormat('d/m/Y', $input['tgl_lahir'])->format('Y-m-d');
+            $input['tgl_nik'] = Carbon::createFromFormat('d/m/Y', $input['tgl_nik'])->format('Y-m-d');
+
             // simpan ke table anggota
             Anggota::create(array_merge($input, ['user_id' => $user->id]));
 
